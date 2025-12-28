@@ -41,3 +41,10 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Windows
+desktop.ini
+Thumbs.db
+
+.env
+.env.*
