@@ -46,6 +46,9 @@ export default function LoginScreen(): React.JSX.Element {
 
     // Login logic will be implemented later
     console.log('Login pressed');
+    
+    // Navigate to home after successful login
+    router.push('/(tabs)/home');
   };
 
   return (

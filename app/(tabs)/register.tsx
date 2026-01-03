@@ -80,6 +80,9 @@ export default function SignupScreen(): React.JSX.Element {
 
     // Signup logic will be implemented later
     console.log('Signup pressed');
+    
+    // Navigate to home after successful registration
+    router.push('/(tabs)/home');
   };
 
   return (

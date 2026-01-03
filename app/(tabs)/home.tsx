@@ -18,6 +18,10 @@ export default function DashboardScreen() {
       router.push('/(tabs)/contact');
     } else if (screen === 'about') {
       router.push('/(tabs)/about');
+    } else if (screen === 'soil_testing') {
+      router.push('/(tabs)/soil_testing');
+    } else if (screen === 'ai-assistant') {
+      router.push('/(tabs)/ai-assistant');
     }
   };
 
@@ -54,7 +58,7 @@ export default function DashboardScreen() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity style={styles.card} onPress={() => handleNavigate('soil_testing')}>
             <View style={styles.cardContent}>
               <Text style={styles.cardText}>check ur soil nutrition !</Text>
             </View>
@@ -72,6 +76,15 @@ export default function DashboardScreen() {
           <TouchableOpacity style={styles.card}>
             <View style={styles.cardContent}>
               <Text style={styles.cardText}>Market Prices</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* AI Assistant Card */}
+        <View style={styles.singleCardContainer}>
+          <TouchableOpacity style={styles.card} onPress={() => handleNavigate('ai-assistant')}>
+            <View style={styles.cardContent}>
+              <Text style={styles.cardText}>AI Assistant</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -128,6 +141,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 16,
     gap: 12,
+  },
+  singleCardContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 16,
   },
   card: {
     flex: 1,
