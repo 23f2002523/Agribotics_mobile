@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: agribotics-db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: agribotics_db
+    volumes:
+      - mongodb_data:/data/db
+      - ./db/seeds:/docker-entrypoint-initdb.d
+    networks:
+      - agribotics-network
+
+  # FastAPI Backend
+  api:
+    build:
+      context: ./services/api
+      dockerfile: ../../infra/docker/Dockerfile.api
+    container_name: agribotics-api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URL=mongodb://admin:admin123@mongodb:27017
+      - DATABASE_NAME=agribotics_db
+    depends_on:
+      - mongodb
+    volumes:
+      - ./services/api:/app
+      - ./ml:/ml
+    networks:
+      - agribotics-network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: agribotics-cache
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - agribotics-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  agribotics-network:
+    driver: bridge
