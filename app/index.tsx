@@ -7,7 +7,7 @@ export default function BrandingScreen() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace('/(tabs)/explore');
+      router.replace('/(tabs)/home');
     }, 5000);
 
     return () => clearTimeout(timer);
