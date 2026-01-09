@@ -1,12 +1,38 @@
+import { DrawerMenu } from '@/components/drawer-menu';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function ContactUsScreen() {
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const router = useRouter();
+
+  const handleNavigate = (screen: string) => {
+    router.push(`/(tabs)/${screen}`);
+  };
+
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Contact Us</Text>
-        
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Contact Us</Text>
+        <TouchableOpacity 
+          style={styles.menuButton}
+          onPress={() => setDrawerVisible(true)}
+        >
+          <MaterialIcons name="menu" size={28} color="#333" />
+        </TouchableOpacity>
+      </View>
+
+      <DrawerMenu
+        visible={drawerVisible}
+        onClose={() => setDrawerVisible(false)}
+        onNavigate={handleNavigate}
+        currentScreen="contact"
+      />
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
         <Text style={styles.description}>
           Have questions or feedback? We'd love to hear from you!
         </Text>
@@ -100,22 +126,38 @@ export default function ContactUsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F9F7',
+    backgroundColor: '#F5F5F5',
+  },
+  header: {
+    backgroundColor: '#FFFFFF',
+    paddingTop: 50,
+    paddingBottom: 16,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  menuButton: {
+    padding: 8,
   },
   content: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingHorizontal: 16,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1E7F43',
-    marginBottom: 12,
+  contentContainer: {
+    paddingTop: 20,
+    paddingBottom: 30,
   },
   description: {
     fontSize: 15,
-    color: '#6B4F3F',
+    color: '#666',
     marginBottom: 24,
     lineHeight: 22,
   },
@@ -125,14 +167,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6B4F3F',
+    color: '#666',
     marginBottom: 8,
   },
   input: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E3E8E3',
+    borderColor: '#E0E0E0',
     padding: 14,
     fontSize: 15,
     color: '#333',
@@ -143,10 +185,15 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: '#1E7F43',
-    borderRadius: 8,
+    borderRadius: 12,
     padding: 16,
     alignItems: 'center',
     marginBottom: 32,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
   submitButtonText: {
     fontSize: 16,
@@ -158,8 +205,8 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#1E7F43',
+    fontWeight: 'bold',
+    color: '#333',
     marginBottom: 16,
   },
   infoCard: {

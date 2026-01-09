@@ -1,6 +1,5 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
@@ -42,10 +41,10 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
           >
             {options.tabBarIcon &&
               options.tabBarIcon({
-                color: isFocused ? '#0af35cff' : '#FFFFFF',
-                size: 24,
+                color: isFocused ? '#1E7F43' : '#999',
+                size: 26,
               })}
-            <Text style={[styles.label, { color: isFocused ? '#0af35cff' : '#FFFFFF' }]}>
+            <Text style={[styles.label, { color: isFocused ? '#1E7F43' : '#999' }]}>
               {label}
             </Text>
           </TouchableOpacity>
@@ -58,22 +57,29 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#098c2cff',
-    height: 80,
+    backgroundColor: '#FFFFFF',
+    height: 70,
     alignItems: 'center',
     paddingHorizontal: 8,
     paddingBottom: 8,
-    borderTopWidth: 0,
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   tab: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 4,
+    paddingVertical: 8,
   },
   label: {
-    fontSize: 10,
-    marginTop: 2,
+    fontSize: 11,
+    marginTop: 4,
     textAlign: 'center',
+    fontWeight: '500',
   },
 });

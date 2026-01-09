@@ -1,12 +1,38 @@
+import { DrawerMenu } from '@/components/drawer-menu';
 import { MaterialIcons } from '@expo/vector-icons';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function AboutScreen() {
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const router = useRouter();
+
+  const handleNavigate = (screen: string) => {
+    router.push(`/(tabs)/${screen}`);
+  };
+
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>About Us</Text>
-        
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>About Us</Text>
+        <TouchableOpacity 
+          style={styles.menuButton}
+          onPress={() => setDrawerVisible(true)}
+        >
+          <MaterialIcons name="menu" size={28} color="#333" />
+        </TouchableOpacity>
+      </View>
+
+      <DrawerMenu
+        visible={drawerVisible}
+        onClose={() => setDrawerVisible(false)}
+        onNavigate={handleNavigate}
+        currentScreen="about"
+      />
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
         <View style={styles.logoContainer}>
           <MaterialIcons name="eco" size={64} color="#1E7F43" style={styles.logo} />
           <Text style={styles.appName}>AgriBotics</Text>
@@ -56,12 +82,34 @@ export default function AboutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F9F7',
+    backgroundColor: '#F5F5F5',
+  },
+  header: {
+    backgroundColor: '#FFFFFF',
+    paddingTop: 50,
+    paddingBottom: 16,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  menuButton: {
+    padding: 8,
   },
   content: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
+  },
+  contentContainer: {
     paddingTop: 20,
+    paddingBottom: 30,
   },
   title: {
     fontSize: 28,
@@ -85,7 +133,7 @@ const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: 16,
-    color: '#6B4F3F',
+    color: '#666',
     fontStyle: 'italic',
     marginTop: 4,
   },
@@ -94,8 +142,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#6B4F3F',
+    fontWeight: 'bold',
+    color: '#333',
     marginBottom: 12,
   },
   card: {

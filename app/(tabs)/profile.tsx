@@ -1,10 +1,17 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { DrawerMenu } from '@/components/drawer-menu';
 import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function ProfileScreen() {
+  const [drawerVisible, setDrawerVisible] = useState(false);
   // For demo purposes, assuming user is not logged in
   const isLoggedIn = false;
+
+  const handleNavigate = (screen: string) => {
+    router.push(`/(tabs)/${screen}`);
+  };
 
   const handleLogin = () => {
     router.push('/(tabs)/login');
@@ -17,7 +24,26 @@ export default function ProfileScreen() {
   if (!isLoggedIn) {
     return (
       <View style={styles.container}>
-        <View style={styles.authContainer}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Profile</Text>
+          <TouchableOpacity 
+            style={styles.menuButton}
+            onPress={() => setDrawerVisible(true)}
+          >
+            <MaterialIcons name="menu" size={28} color="#333" />
+          </TouchableOpacity>
+        </View>
+
+        <DrawerMenu
+          visible={drawerVisible}
+          onClose={() => setDrawerVisible(false)}
+          onNavigate={handleNavigate}
+          currentScreen="profile"
+        />
+
+        <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContentContainer}>
+          <View style={styles.authContainer}>
           <View style={styles.authHeader}>
             <MaterialIcons name="person" size={64} color="#1E7F43" />
             <Text style={styles.authTitle}>Welcome to Agribotics</Text>
@@ -56,12 +82,30 @@ export default function ProfileScreen() {
             </View>
           </View>
         </View>
+        </ScrollView>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Profile</Text>
+        <TouchableOpacity 
+          style={styles.menuButton}
+          onPress={() => setDrawerVisible(true)}
+        >
+          <MaterialIcons name="menu" size={28} color="#333" />
+        </TouchableOpacity>
+      </View>
+
+      <DrawerMenu
+        visible={drawerVisible}
+        onClose={() => setDrawerVisible(false)}
+        onNavigate={handleNavigate}
+        currentScreen="profile"
+      />
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Profile</Text>
         
@@ -133,12 +177,39 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F9F7',
+    backgroundColor: '#F5F5F5',
+  },
+  header: {
+    backgroundColor: '#FFFFFF',
+    paddingTop: 50,
+    paddingBottom: 16,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  menuButton: {
+    padding: 8,
+  },
+  scrollContent: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  scrollContentContainer: {
+    paddingTop: 20,
+    paddingBottom: 30,
   },
   authContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingVertical: 40,
   },
   authHeader: {
     alignItems: 'center',
@@ -147,14 +218,14 @@ const styles = StyleSheet.create({
   authTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1E7F43',
+    color: '#333',
     marginTop: 16,
     marginBottom: 8,
     textAlign: 'center',
   },
   authSubtitle: {
     fontSize: 16,
-    color: '#6B4F3F',
+    color: '#666',
     textAlign: 'center',
     lineHeight: 22,
   },
@@ -163,12 +234,17 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     backgroundColor: '#1E7F43',
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 50,
+    padding: 18,
     alignItems: 'center',
     marginBottom: 16,
     flexDirection: 'row',
     justifyContent: 'center',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   loginButtonText: {
     fontSize: 18,
@@ -177,36 +253,37 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   signupButton: {
-    backgroundColor: '#0af35cff',
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 50,
+    padding: 18,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#1E7F43',
   },
   signupButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#1E7F43',
     marginLeft: 8,
   },
   featuresContainer: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 20,
+    borderRadius: 16,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    elevation: 2,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowRadius: 3,
   },
   featuresTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1E7F43',
+    color: '#333',
     marginBottom: 16,
   },
   featureItem: {
@@ -216,19 +293,13 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 16,
-    color: '#333',
+    color: '#666',
     marginLeft: 12,
   },
   content: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingTop: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1E7F43',
-    marginBottom: 24,
   },
   avatarContainer: {
     alignItems: 'center',
@@ -258,14 +329,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6B4F3F',
+    color: '#666',
     marginBottom: 8,
   },
   inputContainer: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E3E8E3',
+    borderColor: '#E0E0E0',
     padding: 14,
   },
   inputText: {
@@ -274,11 +345,16 @@ const styles = StyleSheet.create({
   },
   editButton: {
     backgroundColor: '#1E7F43',
-    borderRadius: 8,
+    borderRadius: 12,
     padding: 16,
     alignItems: 'center',
     marginTop: 24,
     marginBottom: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
   editButtonText: {
     fontSize: 16,
@@ -287,9 +363,9 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E3E8E3',
+    borderColor: '#E0E0E0',
     padding: 16,
     alignItems: 'center',
     marginBottom: 32,
@@ -297,6 +373,6 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#6B4F3F',
+    color: '#666',
   },
 });
