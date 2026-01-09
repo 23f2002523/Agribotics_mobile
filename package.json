@@ -1,14 +1,25 @@
 {
-  "name": "agribotics_mobile",
-  "main": "expo-router/entry",
+  "name": "agribotics-monorepo",
+  "main": "apps/mobile/expo-router/entry",
   "version": "1.0.0",
+  "private": true,
+  "description": "Agribotics - Agricultural Intelligence Platform",
+  "workspaces": [
+    "apps/*",
+    "services/*"
+  ],
   "scripts": {
-    "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "lint": "expo lint"
+    "start": "cd apps/mobile && expo start",
+    "mobile": "cd apps/mobile && npm start",
+    "android": "cd apps/mobile && expo start --android",
+    "ios": "cd apps/mobile && expo start --ios",
+    "web": "cd apps/mobile && expo start --web",
+    "api": "cd services/api && uvicorn src.main:app --reload",
+    "docker:up": "cd infra && docker-compose up",
+    "docker:down": "cd infra && docker-compose down",
+    "docker:db": "cd infra && docker-compose up mongodb",
+    "install:all": "npm install && cd apps/mobile && npm install",
+    "lint": "cd apps/mobile && expo lint"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
